@@ -68,17 +68,21 @@ def show_invoice(order):
   print_invoice(items)
 
 def calc_item_with_discount(product, quantity, discount):
-  delta = quantity - discount.after
-  discount_applied =  (product.price * discount.discount/100.0) * delta
   value = quantity * product.price
   tax = find_tax(product, value)
-  discount_applied =  (product.price * discount.discount/100.0) * delta
+  discount_applied = calc_discount(product, quantity, discount)
   return Item(product, quantity, discount_applied, tax, value)
 
 def calc_item_without_discount(product, quantity):
   value = product.price * quantity
   tax = find_tax(product, value)
   return Item(product, quantity, 0, tax, value)
+
+def calc_discount(product, quantity, discount):
+  if discount is None:
+    return 0
+  delta = quantity - discount.after
+  return (product.price * discount.discount/100.0) * delta
 
 def find_tax(product, value):
   if product.tool:
