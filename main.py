@@ -58,17 +58,12 @@ class Item:
 
 
 def show_invoice(order):
-  items = []
-  for item in order:
-    product = products[item['id']]
-    quantity = item['q']
-    discount = discounts.get(product.name) 
-    item = create_item(product, quantity, discount)
-    items.append(item)
+  print_invoice([create_item(i) for i in order])
 
-  print_invoice(items)
-
-def create_item(product, quantity, discount):
+def create_item(item):
+  product = products[item['id']]
+  quantity = item['q']
+  discount = discounts.get(product.name) 
   value = quantity * product.price
   tax = find_tax(product, value)
   discount_applied = calc_discount(product, quantity, discount)
