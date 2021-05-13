@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from enum import Enum
 
-class Category:
+class Category(Enum):
   TOOL = 'tool'
   OTHER = 'other'
 
