@@ -52,6 +52,7 @@ class Item:
   def __str__(self):
     return f"\t{self.product.name:15}\t$  {self.product.price:12.1f}\t{self.quantity:8}\t$ {self.amount:8.1f}\t$ {self.discount_applied:8.1f}\t$ {self.tax_applied:8.1f}\t$ {self.amount-self.discount_applied+self.tax_applied:8.1f}"
 
+
 def show_invoice(order):
   items = []
   for item in order:
@@ -69,13 +70,19 @@ def show_invoice(order):
       discount_applied =  (product.price * discount.discount/100.0) * delta
       items.append(Item(product, quantity, discount_applied, tax, value))
     else:
-      value = product.price * quantity
-      if product.tool:
-        tax = value * taxes['tool'] / 100.0
-      else:
-        tax = value * taxes['other'] / 100.0
-      items.append(Item(product, quantity, 0, tax, value))
+      item = calc_item_without_discount(product, quantity)
+      items.append(item)
+
   print_invoice(items)
+
+
+def calc_item_without_discount(product, quantity):
+  value = product.price * quantity
+  if product.tool:
+    tax = value * taxes['tool'] / 100.0
+  else:
+    tax = value * taxes['other'] / 100.0
+  return Item(product, quantity, 0, tax, value)
 
 
 def print_invoice(items):
