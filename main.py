@@ -49,6 +49,8 @@ class Item:
   tax_applied: float
   amount: float
 
+  def __str__(self):
+    return f"\t{self.product.name:15}\t$  {self.product.price:12.1f}\t{self.quantity:8}\t$ {self.amount:8.1f}\t$ {self.discount_applied:8.1f}\t$ {self.tax_applied:8.1f}\t$ {self.amount-self.discount_applied+self.tax_applied:8.1f}"
 
 def show_invoice(order):
   items = []
@@ -83,7 +85,7 @@ def print_invoice(items):
   tax = 0
   discount = 0
   for item in items:
-    print(f"\t{item.product.name:15}\t$  {item.product.price:12.1f}\t{item.quantity:8}\t$ {item.amount:8.1f}\t$ {item.discount_applied:8.1f}\t$ {item.tax_applied:8.1f}\t$ {item.amount-item.discount_applied+item.tax_applied:8.1f}")
+    print(item)
     total += item.amount
     tax += item.tax_applied
     discount += item.discount_applied
