@@ -58,14 +58,7 @@ def show_invoice(order):
     product = products[item['id']]
     quantity = item['q']
     discount = discounts.get(product.name) 
-    if discount is None:
-      value = product.price * quantity
-      if product.tool:
-        tax = value * taxes['tool'] / 100.0
-      else:
-        tax = value * taxes['other'] / 100.0
-      items.append(Item(product, quantity, 0, tax, value))
-    else:
+    if discount:
       delta = quantity - discount.after
       discount_applied =  (product.price * discount.discount/100.0) * delta
       value = quantity * product.price
@@ -75,7 +68,15 @@ def show_invoice(order):
         tax = value * taxes['other'] / 100.0
       discount_applied =  (product.price * discount.discount/100.0) * delta
       items.append(Item(product, quantity, discount_applied, tax, value))
+    else:
+      value = product.price * quantity
+      if product.tool:
+        tax = value * taxes['tool'] / 100.0
+      else:
+        tax = value * taxes['other'] / 100.0
+      items.append(Item(product, quantity, 0, tax, value))
   print_invoice(items)
+
 
 def print_invoice(items):
   print("Factura")
