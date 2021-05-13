@@ -71,21 +71,20 @@ def calc_item_with_discount(product, quantity, discount):
   delta = quantity - discount.after
   discount_applied =  (product.price * discount.discount/100.0) * delta
   value = quantity * product.price
-  if product.tool:
-    tax = value * taxes['tool'] / 100.0
-  else:
-    tax = value * taxes['other'] / 100.0
+  tax = find_tax(product, value)
   discount_applied =  (product.price * discount.discount/100.0) * delta
   return Item(product, quantity, discount_applied, tax, value)
 
 def calc_item_without_discount(product, quantity):
   value = product.price * quantity
-  if product.tool:
-    tax = value * taxes['tool'] / 100.0
-  else:
-    tax = value * taxes['other'] / 100.0
+  tax = find_tax(product, value)
   return Item(product, quantity, 0, tax, value)
 
+def find_tax(product, value):
+  if product.tool:
+    return value * taxes['tool'] / 100.0
+  else:
+    return value * taxes['other'] / 100.0
 
 def print_invoice(items):
   print("Factura")
