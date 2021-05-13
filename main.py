@@ -73,7 +73,9 @@ def show_invoice(order):
         tax = value * taxes['other'] / 100.0
       discount_applied =  (product.price * discount.discount/100.0) * delta
       items.append(Item(product, quantity, discount_applied, tax, value))
+  print_invoice(items)
 
+def print_invoice(items):
   print("Factura")
   print("Items:")
   print(f"\t{'Producto':12}\tCosto Unitario\tCantidad\tBruto\t\tDescuento\tImpuesto\tNeto")
