@@ -59,24 +59,16 @@ def show_invoice(order):
     product = products[item['id']]
     quantity = item['q']
     discount = discounts.get(product.name) 
-    if discount:
-      item = calc_item_with_discount(product, quantity, discount)
-    else:
-      item = calc_item_without_discount(product, quantity)
+    item = create_item(product, quantity, discount)
     items.append(item)
 
   print_invoice(items)
 
-def calc_item_with_discount(product, quantity, discount):
+def create_item(product, quantity, discount):
   value = quantity * product.price
   tax = find_tax(product, value)
   discount_applied = calc_discount(product, quantity, discount)
   return Item(product, quantity, discount_applied, tax, value)
-
-def calc_item_without_discount(product, quantity):
-  value = product.price * quantity
-  tax = find_tax(product, value)
-  return Item(product, quantity, 0, tax, value)
 
 def calc_discount(product, quantity, discount):
   if discount is None:
