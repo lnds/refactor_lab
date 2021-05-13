@@ -1,24 +1,28 @@
 from dataclasses import dataclass
+from enum import Enum
 
+class Category:
+  TOOL = 'tool'
+  OTHER = 'other'
 
 @dataclass
 class Product:
   name: str
   price: float
-  tool: bool
+  category: Category
 
 
 products = [
-  Product("martillo", 50, True),
-  Product("destornillador", 20, True),
-  Product("sierra", 100, True),
-  Product("clavos", 1, False),
-  Product("tornillos", 1, False),
-  Product("hojas de sierra", 10, False),
+  Product("martillo", 50, Category.TOOL),
+  Product("destornillador", 20, Category.TOOL),
+  Product("sierra", 100, Category.TOOL),
+  Product("clavos", 1, Category.OTHER),
+  Product("tornillos", 1, Category.OTHER),
+  Product("hojas de sierra", 10, Category.OTHER),
 ]
 
 
-taxes = {'tool': 10, 'other': 5}
+taxes = {Category.TOOL: 10, Category.OTHER: 5}
 
 @dataclass
 class Discount:
@@ -77,11 +81,8 @@ def calc_discount(product, quantity, discount):
   return (product.price * discount.discount/100.0) * delta
 
 def find_tax(product, value):
-  if product.tool:
-    return value * taxes['tool'] / 100.0
-  else:
-    return value * taxes['other'] / 100.0
-
+  return value * taxes[product.category] / 100.0
+  
 def print_invoice(items):
   print("Factura")
   print("Items:")
